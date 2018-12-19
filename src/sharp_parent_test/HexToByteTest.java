@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class TestHexToByte {
+public class HexToByteTest {
     public static void main(String[] args) {
 //        String commandId="2762929,2762928";
 //        String[] sessions = commandId.split(",");
