@@ -20,6 +20,7 @@ public class CompareToTest {
         System.out.println(a1.compareTo(a4));
         System.out.println(a2.compareTo(a3));
         System.out.println(a1.compareTo(a4));
+        System.out.println(a4.compareTo(a1));
         
     }
 }
