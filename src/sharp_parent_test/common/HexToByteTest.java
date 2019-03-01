@@ -10,17 +10,26 @@ public class HexToByteTest {
 //        String[] sessions = commandId.split(",");
 //        System.out.println(sessions);
 
+        //单目>算数运算符>移位>比较>按位>逻辑>三目>赋值
+        byte ni = (byte) (1 << 4 + 2);
+        System.out.println("ni=" + ni);
 
         byte[] b = hexToByteArray("4101DB1922024CB2F2005B00039211013F013F000F0000000700000007000000000013000000014100000000");
-        System.out.println("byte "+Arrays.toString(b));
+        System.out.println("byte " + Arrays.toString(b));
         List list1 = new ArrayList();
+
+        //byte转为int
         for (int i = 0; i < b.length; i++) {
             int a = (int) b[i] & 0xFF;
             list1.add(a);
         }
-        System.out.println("list1 "+list1);
+        System.out.println("list1 " + list1);
     }
 
+    /*byte 范围为-128~127，即10000000~01111111
+            * */
+
+    //两位数两位数的将十六进制转换为十进制byte
     public static byte[] hexToByteArray(String code) {
 
         byte[] ret = null;

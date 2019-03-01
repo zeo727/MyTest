@@ -13,7 +13,7 @@ public class BooleanUrl {
         String host=url.getHost();
 
         if (!url.getProtocol().startsWith("http")) {
-            System.out.println("http yes");
+            System.out.println("http no");
         }
 
         InetAddress inetAddress = InetAddress.getByName(host);
