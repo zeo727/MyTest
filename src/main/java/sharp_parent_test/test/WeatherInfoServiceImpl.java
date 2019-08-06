@@ -5,6 +5,8 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.joda.time.DateTime;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -48,6 +50,8 @@ public class WeatherInfoServiceImpl {
     private static final String PM25IN_KEY = "GiyErqxy6tq5z29H8scu";
     // tencent map geocode service URL
     private static final String TENCENT_MAP_GETCITY_BY_IP_URL = "http://apis.map.qq.com/ws/location/v1/ip?key={0}&ip={1}";
+    //和风天气空气质量接口
+    private static final String OPENWEATHER_PM25 = "https://api.heweather.net/s6/air/now?location={0}&key={1}";
 
     public static void main(String[] args) {
     }
@@ -203,9 +207,11 @@ public class WeatherInfoServiceImpl {
 
         String ret = "";
 
-        if (!StringUtil.isNotBlank(getOpenWeatherAreaId(cityName))) {
-            return ret;
-        }
+//        if (!StringUtil.isNotBlank(getOpenWeatherAreaId(cityName))) {
+//            return ret;
+//        }
+
+        System.out.println("aaa");
 
         // 实际调用的URL及参数
         String url = MessageFormat.format(OPENWEATHER_URL, cityName.trim(), OPENWEATHER_PRIVATE_KEY);
@@ -215,6 +221,8 @@ public class WeatherInfoServiceImpl {
         Map<String, Object> jsonObj = JsonUtil.getJsonFromString(result);
 
         ret = MessageHelper.getNewWeatherMessage(jsonObj);
+
+        System.out.println(ret);
 
         return ret;
     }
@@ -228,9 +236,9 @@ public class WeatherInfoServiceImpl {
     private String callHeWeatherForecast(String subLocal, String cityName) {
         String ret = "";
 
-        if (!StringUtil.isNotBlank(getOpenWeatherAreaNameEN(subLocal.trim()))) {
-            return ret;
-        }
+//        if (!StringUtil.isNotBlank(getOpenWeatherAreaNameEN(subLocal.trim()))) {
+//            return ret;
+//        }
 
         // 实际调用的URL及参数
         String url = MessageFormat.format(OPENWEATHER_URL, subLocal.trim(), OPENWEATHER_PRIVATE_KEY);
@@ -245,6 +253,8 @@ public class WeatherInfoServiceImpl {
         weatherMap.put("location", getOpenWeatherAreaNameEN(subLocal.trim()));
 
         ret = JsonUtil.getJsonFromMap(weatherMap);
+
+        System.out.println(ret);
 
         return ret;
     }
@@ -327,39 +337,44 @@ public class WeatherInfoServiceImpl {
         String result = "";
         boolean newFlg = false;
 
-//        String pm25Result = KVStoreUtils.getHashmapField(PM25_KEY, cityName);
-//        if (StringUtil.isNotBlank(pm25Result)) {
-//            String currentDate = DateUtil.getCurrentDate();
-//            String pm25Result_date = pm25Result.substring(0, 8);
-//            String pm25Result_hour = pm25Result.substring(8, 10);
-//            // 年月日比较
-//            if (currentDate.substring(0, 8).equals(pm25Result_date)) {
-//                if (currentDate.substring(8, 10).compareTo(pm25Result_hour) >= 1) {
-//                    newFlg = true;
-//                }
-//
-//            } else {
-//                newFlg = true;
-//            }
-//
-//        } else {
-//            newFlg = true;
-//        }
+        String url = MessageFormat.format(OPENWEATHER_PM25, cityName, OPENWEATHER_PRIVATE_KEY);
+
+        result = sendHttpGetRequest(url, "PM25.in");
+
+        String pm25Result = DateUtil.getCurrentDate() + result;
+
+        if (StringUtil.isNotBlank(pm25Result)) {
+            String currentDate = DateUtil.getCurrentDate();
+            String pm25Result_date = pm25Result.substring(0, 8);
+            String pm25Result_hour = pm25Result.substring(8, 10);
+            // 年月日比较
+            if (currentDate.substring(0, 8).equals(pm25Result_date)) {
+                if (currentDate.substring(8, 10).compareTo(pm25Result_hour) >= 1) {
+                    newFlg = true;
+                }
+
+            } else {
+                newFlg = true;
+            }
+
+        } else {
+            newFlg = true;
+        }
 
         if (newFlg) {
-            // 获取用于生成key的URL
-            String url = MessageFormat.format(PMALLAQI_URL, cityName, PM25IN_KEY);
-
-            result = sendHttpGetRequest(url, "PM25.in");
-
+//            // 获取用于生成key的URL
+//            String url = MessageFormat.format(PMALLAQI_URL, cityName, PM25IN_KEY);
+//
+//            result = sendHttpGetRequest(url, "PM25.in");
+//
 //            if (StringUtil.isNotBlank(result)) {
 //                if (!(result.contains("error"))) {
 //                    KVStoreUtils.putHashmapField(PM25_KEY, cityName, DateUtil.getCurrentDate() + result);
 //                }
 //            }
-//
-//        } else {
-//            result = pm25Result.substring(10);
+
+        } else {
+            result = pm25Result.substring(10);
         }
 
         return result;
@@ -489,6 +504,133 @@ public class WeatherInfoServiceImpl {
         Object jsonObj = JsonUtil.getJsonObject(result);
         returnMap = MessageHelper.getAllPM25Info(jsonObj, workDate);
         return returnMap;
+    }
+
+    public int getPM25InfoByCity1(String cityName) {
+        int pm25 = 0;
+
+        if (StringUtil.isNotBlank(cityName)) {
+
+            Object jsonObj = JsonUtil.getJsonObject(callPM25Info1(cityName));
+
+            String ret = MessageHelper.getPM25Value(jsonObj);
+
+            if (StringUtil.isNotBlank(ret)) {
+                try {
+                    pm25 = Integer.valueOf(ret);
+                } catch (Exception e) {
+                    //logger.error(e);
+                    pm25 = 0;
+                }
+            }
+        }
+        if (pm25 == 0) {
+            boolean newFlg = false;
+
+            //String pm25Result = KVStoreUtils.getHashmapField(PM25_KEY, PM25_ALL_FILED);
+//            if (StringUtil.isNotBlank(pm25Result)) {
+//                String currentDate = DateUtil.getCurrentDate();
+//                String pm25Result_date = pm25Result.substring(0, 8);
+//                String pm25Result_hour = pm25Result.substring(8, 10);
+//                // 年月日比较
+//                if (currentDate.substring(0, 8).equals(pm25Result_date)) {
+//                    newFlg = false;
+//
+//                } else {
+//                    if (currentDate.substring(8, 10).compareTo(pm25Result_hour) >= 24) {
+//                        newFlg = true;
+//                    }
+//                }
+//
+//            } else {
+//                newFlg = true;
+//            }
+
+            if (newFlg) {
+                // 获取用于生成key的URL
+                String url = MessageFormat.format(PM25IN_ALL_URL, PM25IN_KEY);
+                String result = sendHttpGetRequest(url, "PM25.in");
+                Object jsonObj = JsonUtil.getJsonObject(result);
+                pm25 = MessageHelper.getPM25AllValue(jsonObj);
+                if (pm25 != 0) {
+                    //KVStoreUtils.putHashmapField(PM25_KEY, PM25_ALL_FILED, DateUtil.getCurrentDate() + pm25);
+                }
+            } else {
+                //pm25 = Integer.parseInt(pm25Result.substring(10));
+            }
+        }
+
+        return pm25;
+    }
+
+    /**
+     * @param cityName
+     * @return
+     */
+    private String callPM25Info1(String cityName) {
+        String result = "";
+        boolean newFlg = false;
+
+//        String pm25Result = KVStoreUtils.getHashmapField(PM25_KEY, cityName);
+//        if (StringUtil.isNotBlank(pm25Result)) {
+//            String currentDate = DateUtil.getCurrentDate();
+//            String pm25Result_date = pm25Result.substring(0, 8);
+//            String pm25Result_hour = pm25Result.substring(8, 10);
+//            // 年月日比较
+//            if (currentDate.substring(0, 8).equals(pm25Result_date)) {
+//                if (currentDate.substring(8, 10).compareTo(pm25Result_hour) >= 1) {
+//                    newFlg = true;
+//                }
+//
+//            } else {
+//                newFlg = true;
+//            }
+//
+//        } else {
+//            newFlg = true;
+//        }
+
+        if (newFlg) {
+            // 获取用于生成key的URL
+            String url = MessageFormat.format(OPENWEATHER_PM25, cityName, OPENWEATHER_PRIVATE_KEY);
+
+            result = sendHttpGetRequest(url, "PM25.in");
+
+            if (StringUtil.isNotBlank(result)) {
+                if (!(result.contains("error"))) {
+                    //KVStoreUtils.putHashmapField(PM25_KEY, cityName, DateUtil.getCurrentDate() + result);
+                }
+            }
+
+        } else {
+            //result = pm25Result.substring(10);
+        }
+
+        return result;
+    }
+
+    public String getPM25Info1(String city) {
+        String url = MessageFormat.format(OPENWEATHER_PM25, city, OPENWEATHER_PRIVATE_KEY);
+
+        String result = sendHttpGetRequest(url, "PM25.in");
+        String pm25 = "";
+
+        if (StringUtil.isNotBlank(result)) {
+            if (!(result.contains("error"))) {
+                JSONObject jsonObject = new JSONObject(result);
+                JSONArray list = (JSONArray) jsonObject.get("HeWeather6");
+                JSONObject jsonObject1 = (JSONObject) list.get(0);
+                JSONObject air_now_city = jsonObject1.getJSONObject("air_now_city");
+
+                pm25 = (String) air_now_city.get("pm25");
+            }
+
+        }
+        return pm25;
+    }
+
+    public Object getPM25Object1(String city) {
+        return "";
     }
 
 }

@@ -1,6 +1,8 @@
 package sharp_parent_test.test;
 
 
+import org.json.JSONObject;
+
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -986,14 +988,9 @@ public class MessageHelper {
 
 		String ret = "";
 
-		if (obj instanceof ArrayList<?>) {
-			ArrayList<?> cityList = (ArrayList<?>) obj;
-			Map<String, ?> dataObj = (Map) cityList.get(0);
+		JSONObject jsonObject = (JSONObject)obj;
+		jsonObject.get("mmm");
 
-			if (dataObj.get("pm2_5") != null) {
-				ret = dataObj.get("pm2_5").toString();
-			}
-		}
 
 		return ret;
 	}
