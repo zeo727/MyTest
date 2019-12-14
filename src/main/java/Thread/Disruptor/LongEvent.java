@@ -1,4 +1,4 @@
-package Disruptor;
+package Thread.Disruptor;
 
 public class LongEvent {
 

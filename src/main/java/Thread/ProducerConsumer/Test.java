@@ -1,4 +1,4 @@
-package Thread;
+package Thread.ProducerConsumer;
 
 /*
 生产者消费者模型

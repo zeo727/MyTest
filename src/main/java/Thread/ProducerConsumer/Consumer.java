@@ -1,4 +1,4 @@
-package Thread;
+package Thread.ProducerConsumer;
 
 public class Consumer extends Thread{
     // 每次消费的产品数量

@@ -1,4 +1,4 @@
-package Disruptor;
+package Thread.Disruptor;
 
 import com.lmax.disruptor.EventFactory;
 

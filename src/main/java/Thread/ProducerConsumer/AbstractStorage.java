@@ -1,4 +1,4 @@
-package Thread;
+package Thread.ProducerConsumer;
 
 public interface AbstractStorage {
     void consume(int num);

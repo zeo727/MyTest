@@ -1,4 +1,4 @@
-package Thread;
+package Thread.ProducerConsumer;
 
 import java.util.LinkedList;
 

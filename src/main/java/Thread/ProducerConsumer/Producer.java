@@ -1,4 +1,4 @@
-package Thread;
+package Thread.ProducerConsumer;
 
 public class Producer extends Thread{
     //每次生产的数量

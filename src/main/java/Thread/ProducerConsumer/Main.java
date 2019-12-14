@@ -1,4 +1,4 @@
-package Thread;
+package Thread.ProducerConsumer;
 
 /*
 线程安全
