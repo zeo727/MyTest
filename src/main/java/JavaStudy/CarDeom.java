@@ -14,6 +14,7 @@ class CarDemo {
         Car a = new Car();
         a.color = "red";
         a.num = 1;
+        a.run();
 
     }
 }

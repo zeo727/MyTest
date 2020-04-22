@@ -1,28 +1,28 @@
-package JavaStudy;
+package JavaStudy.heap_and_stack;
 
 import java.util.Arrays;
 
-/*
-* https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Java%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E9%A2%98.md
-* */
+/**
+ * @author https://github.com/Snailclimb/JavaGuide/blob/master/docs/java/Java%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1%E9%A2%98.md
+ **/
 public class MyStack {
+    private static final int GROW_FACTOR = 2;
     private int[] storage;//存放栈中元素的数组
     private int capacity;//栈的容量
     private int count;//栈中元素数量
-    private static final int GROW_FACTOR = 2;
 
     //TODO：不带初始容量的构造方法。默认容量为8
     public MyStack() {
         this.capacity = 8;
-        this.storage=new int[8];
+        this.storage = new int[8];
         this.count = 0;
     }
 
     //TODO：带初始容量的构造方法
     public MyStack(int initialCapacity) {
-        if (initialCapacity < 1)
+        if (initialCapacity < 1) {
             throw new IllegalArgumentException("Capacity too small.");
-
+        }
         this.capacity = initialCapacity;
         this.storage = new int[initialCapacity];
         this.count = 0;
@@ -46,18 +46,18 @@ public class MyStack {
     //TODO：返回栈顶元素并出栈
     private int pop() {
         count--;
-        if (count == -1)
+        if (count == -1) {
             throw new IllegalArgumentException("Stack is empty.");
-
+        }
         return storage[count];
     }
 
     //TODO：返回栈顶元素不出栈
     private int peek() {
-        if (count == 0){
+        if (count == 0) {
             throw new IllegalArgumentException("Stack is empty.");
-        }else {
-            return storage[count-1];
+        } else {
+            return storage[count - 1];
         }
     }
 
@@ -81,14 +81,13 @@ public class MyStack {
         myStack.push(6);
         myStack.push(7);
         myStack.push(8);
-        System.out.println("返回栈顶元素不出栈"+myStack.peek());//8
-        System.out.println("返回栈中元素的个数"+myStack.size());//8
+        System.out.println("返回栈顶元素不出栈" + myStack.peek());//8
+        System.out.println("返回栈中元素的个数" + myStack.size());//8
         System.out.println("返回栈顶元素并出栈");
         for (int i = 0; i < 8; i++) {
             System.out.println(myStack.pop());
         }
-        System.out.println("判断栈是否为空"+myStack.isEmpty());//true
+        System.out.println("判断栈是否为空" + myStack.isEmpty());//true
         myStack.pop();//报错：java.lang.IllegalArgumentException: Stack is empty.
     }
-
 }

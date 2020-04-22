@@ -1,4 +1,4 @@
-package JavaStudy;
+package JavaStudy.Collections;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,7 +7,7 @@ import java.util.Comparator;
 /*
 * https://gitee.com/SnailClimb/JavaGuide/blob/master/docs/java/Basis/Arrays,CollectionsCommonMethods.md
 * */
-public class sort {
+public class Sort {
     public static void main(String args[]) {
         ArrayList<Integer> arrayList = new ArrayList<Integer>();
         arrayList.add(-1);
