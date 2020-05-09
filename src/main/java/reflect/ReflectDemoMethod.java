@@ -62,7 +62,7 @@ public class ReflectDemoMethod {
             System.out.println(method);
             String name = method.getName();
             System.out.println(name);
-            //method.setAccessible(true);
+            //interfaceMethod.setAccessible(true);
         }
 
         //获取类名
