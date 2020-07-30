@@ -32,6 +32,7 @@ public class TestStreamAPI3 {
      * max(Comparator c c) ) 返回流中最大值
      * min(Comparator c c) ) 返回流中最小值
      * forEach(Consumer c c) ) 内部迭代 ( (用 使用  Collection  接口需要用户去做迭代，称为 外部迭代 。相反， Stream API  使用内部迭代 —— 它帮你把迭代做了) )
+     * concat(Stream s1,Stream s2)/Stream.of(stream1, stream2, stream3)  合并流
      */
     @Test
     public void test1() {

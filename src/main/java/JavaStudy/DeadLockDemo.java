@@ -26,7 +26,7 @@ public class DeadLockDemo {
         }, "线程 1").start();
 
         new Thread(() -> {
-            synchronized (resource1) {
+            synchronized (resource2) {
                 System.out.println(Thread.currentThread() + "get resource2");
                 try {
                     Thread.sleep(1000);
@@ -34,7 +34,7 @@ public class DeadLockDemo {
                     e.printStackTrace();
                 }
                 System.out.println(Thread.currentThread() + "waiting get resource1");
-                synchronized (resource2) {
+                synchronized (resource1) {
                     System.out.println(Thread.currentThread() + "get resource1");
                 }
             }

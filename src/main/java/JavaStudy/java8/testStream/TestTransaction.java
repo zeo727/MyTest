@@ -1,5 +1,7 @@
 package JavaStudy.java8.testStream;
 
+import JavaStudy.java8.pojo.Trader;
+import JavaStudy.java8.pojo.Transaction;
 import org.junit.Before;
 import org.junit.Test;
 

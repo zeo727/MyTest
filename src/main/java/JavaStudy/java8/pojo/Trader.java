@@ -1,4 +1,4 @@
-package JavaStudy.java8.testStream;
+package JavaStudy.java8.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

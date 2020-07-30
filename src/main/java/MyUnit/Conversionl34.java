@@ -198,10 +198,10 @@ public class Conversionl34 {
 
 //    public static void main(String[] args) {
 //        String test1 = datecode(12);
-//        String test2 = serialNumber(33);
+//        String Caesarcipher = serialNumber(33);
 //        String test3=checkcode("CC1B940010013");
 //        System.out.println(test1);
-//        System.out.println(test2);
+//        System.out.println(Caesarcipher);
 //        System.out.println(test3);
 //    }
 }
